@@ -1,0 +1,42 @@
+repository: serhii/flipperzero
+commit: 6cfa16fdb17ec28d44aa3d1b7f8d203cb7d47bc6
+date: 2026-09-25T02:01:02+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+marauder bridge via Flipper USB-UART + marauder_status (ticket #9)
+- extension/marauder-bridge.ts: raw Marauder probe (blocking pty read +
+  timeout race; O_NONBLOCK on a pty is ESPIPE), MarauderBridge state
+  machine, extractMarauderVersion (strips ESP-IDF noise from the reboot
+  capture, prefers the 'Marauder ... vX.Y.Z' banner association)
+- extension/marauder-tools.ts: marauder_bridge_open (confirm-gated,
+  loader open GPIO + user starts the USB-UART Bridge scene, 6s probe
+  windows, closes the engine fd before the Marauder session takes the
+  port), marauder_bridge_close (re-plug-safe FlipperIsBack poll),
+  marauder_status (version + help + settings; rebootToProbeVersion)
+- extension/serial.ts: CommandResult.banner (drainBanner now returns the
+  captured banner), public discoverPort()/resetPort()/close()
+- extension/tools.ts: every flipper_* tool refuses with
+  'Flipper suspended, bridge active' while the bridge runs (single choke
+  point in createFlipperTools when a bridge is provided)
+- dev/test-marauder-bridge.ts: 23 checks on pty fakes (fake Marauder +
+  fake Flipper CLI), no hardware
+- dev/demo-marauder-bridge.ts: live walk (user on the Flipper buttons)
+- docs/protocol.md: 'Marauder bridge' section — live-verified facts
+  (Marauder v1.15.1: first response after CDC switch can be slow/partial,
+  no runtime version command, settings format, v1.15.1 command set),
+  Flipper-CLI-silent-while-app-open behavior (input buffered, flushed
+  as one mangled command on app close), release paths
+- README: tools, layout, roadmap (#9 done), dev commands
+
+Live-verified end-to-end (Marauder v1.15.1, Flipper FW 1.4.3):
+open GPIO -> USB-UART Bridge scene -> Marauder CLI on the same port ->
+status (version v1.15.1 via reboot capture, help, settings) -> BACK ->
+Flipper CLI back. All suites green: guard 30, marauder 22,
+marauder-bridge 23, write 38, tx 47, serial DONE.
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
