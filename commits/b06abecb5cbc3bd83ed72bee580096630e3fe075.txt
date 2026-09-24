@@ -1,0 +1,13 @@
+repository: serhii/flipperzero
+commit: b06abecb5cbc3bd83ed72bee580096630e3fe075
+date: 2026-09-24T07:02:50+03:00
+author: serhii <serhii@local>
+branches: main
+
+message:
+docs: Flipper serial CLI protocol reference (FW 1.4.3, live-verified)
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
