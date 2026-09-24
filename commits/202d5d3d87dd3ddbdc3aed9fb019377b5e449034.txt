@@ -1,0 +1,24 @@
+repository: serhii/flipperzero
+commit: 202d5d3d87dd3ddbdc3aed9fb019377b5e449034
+date: 2026-09-24T20:05:41+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+serial: handle write-side link death (found during ticket #5 live test)
+Write errors (EIO on unplug/re-enumeration) were not handled: the session
+kept a dead fd and every subsequent command failed with the same EIO.
+Now all tty writes go through ttyWrite() with the same fatal-error handling
+as reads (dispose -> the next command reopens the port), and the error
+message says which operation (read/write) failed.
+
+Found live: after the device re-enumerated (ttyACM0 -> ttyACM1), the long-
+lived extension session kept writing to the stale fd.
+
+Tests: tsc clean; guard 30/30; marauder 22/22; test-write 38/38;
+test-tx 47/47.
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
