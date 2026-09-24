@@ -1,0 +1,21 @@
+repository: serhii/flipperzero
+commit: 1b2e99a1deda9e3a6603f5ad80fa1f486ec21ec7
+date: 2026-09-24T12:54:24+03:00
+author: pi <pi@local>
+branches: main
+
+message:
+pi extension: Flipper Zero serial CLI engine + 11 read-only tools
+- extension/serial.ts: dependency-free serial engine (node:fs blocking fd,
+  thread-pool reads, CR line endings, ETX abort, prompt-framed response
+  parsing, subshell atomicity, port autodiscovery, reconnect)
+- extension/tools.ts: flipper_status/help/sd_list/sd_tree/sd_read/
+  ir_rx/subghz_rx/nfc_scan/rfid_read/ikey_read/gpio_read (all sequential)
+- extension/index.ts: entry, registers tools via pi.registerTool
+- dev/test-serial.ts: live device test harness
+- protocol facts verified live on FW 1.4.3 (docs/protocol.md)
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
