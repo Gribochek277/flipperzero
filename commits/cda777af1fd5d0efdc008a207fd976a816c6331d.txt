@@ -1,0 +1,29 @@
+repository: serhii/flipperzero
+commit: cda777af1fd5d0efdc008a207fd976a816c6331d
+date: 2026-09-24T17:02:44+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+serial core: protocol-pluggable profiles — Flipper + Marauder (ticket #2)
+- extension/profiles.ts: ProtocolProfile — prompt pattern, line terminator,
+  abort byte, baud, response-echo shape, port discovery, command guard.
+  flipperProfile (230400, >:/[nfc]>: prompts, \r lines, 0x03 abort) and
+  marauderProfile (115200, '> ' prompt without trailing newline, \n lines —
+  firmware reads readStringUntil('\n'), a bare \r hangs it; no abort byte;
+  '#<line>' command echo)
+- serial.ts: engine becomes device-agnostic SerialSession(profile);
+  FlipperSerial kept as a profile-pinned subclass so tools/tests keep their
+  API. Prompt regex de-globalized (stateful lastIndex was a latent bug).
+- dev/fake_marauder.py + dev/test-marauder.ts: 22 checks against a pty-backed,
+  firmware-faithful fake Marauder, no hardware (prompt w/o newline, \n
+  terminator, #echo stripping, timeout+resync without abort byte)
+- docs/protocol.md: Marauder section with firmware-source evidence;
+  README: layout, dev commands, 'Adding a device'
+- verified: tsc clean, guard 30/30, live Flipper harness byte-identical
+  to pre-change baseline (status/storage/help/ir-rx abort/nfc subshell)
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
