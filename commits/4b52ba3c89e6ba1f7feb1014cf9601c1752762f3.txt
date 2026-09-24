@@ -1,0 +1,33 @@
+repository: serhii/flipperzero
+commit: 4b52ba3c89e6ba1f7feb1014cf9601c1752762f3
+date: 2026-09-24T19:27:30+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+tools: flipper_ir_tx — confirm-gated IR transmit (ticket #5)
+- serial: ANSI-safe buffer accumulation (pushChunk) — SGR-colored subshell
+  prompts ([nfc]>: printed with escapes, possibly split across chunks) now
+  match promptPattern: subshell entry 8s->0.5s, resync 10s->0.5s, and the
+  nfc subshell test dropped from 23.9s to 5.3s
+- storage-validate.ts: renamed from write-validate.ts (shared by write and
+  file-based tx tools)
+- tools: flipper_ir_tx — explicit protocol/address/command (hex) or .ir file
+  replay (little-endian protocol:/address:/command: fields parsed from
+  storage read); client-side protocol list + hex checks, device re-validates
+  per-protocol ranges (error surfaced verbatim); ctx.ui.confirm before send,
+  fail-closed without a UI
+- dev/test-tx.ts: 22 checks — parser/validator units + live tx (device
+  accepts, range rejection visible) + confirm/decline/no-UI
+
+Protocol facts verified live (FW 1.4.3), now in docs/protocol.md: ir tx is
+blocking (~0.3s NEC frame) so same-device tx->rx round-trip is impossible;
+protocol names case-sensitive; NEC addr/cmd must fit 16 bits.
+
+Tests: tsc clean; guard 30/30; marauder 22/22; test-write 38/38;
+test-tx 22/22; test-serial green and ~2x faster (ANSI fix).
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
