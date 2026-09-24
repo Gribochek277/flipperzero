@@ -1,0 +1,13 @@
+repository: serhii/flipperzero
+commit: 5de828e778245f3e019d3899019f50f7d1401696
+date: 2026-09-24T22:40:35+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+docs+dev: BLE spike findings — RPC-only verdict, GATT layout, prototype (ticket #3)
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
