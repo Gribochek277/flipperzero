@@ -1,0 +1,28 @@
+repository: serhii/flipperzero
+commit: aa237f389e0f90eb83ae1d2c325a2566b2d22a90
+date: 2026-09-24T18:01:15+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+tools: flipper_write — confirm-gated text file writes (ticket #4)
+- serial: runWithPayload(cmd, payload) — command, device settle, baud-paced
+  512B payload chunks, profile stop byte, prompt wait; idempotent stop byte
+  + resync on timeout
+- write-validate.ts: path (/ext|/int, no .., no whitespace, file not dir)
+  and text-only content checks (NUL/control rejected, 16 KiB cap)
+- tools: flipper_write (create/append) — ctx.ui.confirm before send with
+  path + size, fails closed when no confirmation UI is available;
+  create mode = stat -> conditional remove -> write
+- dev/test-write.ts: 38 checks — validators, live create/read-back
+  (verbatim, utf8), append, overwrite, tool layer with mock ctx
+  (confirm / declined / no-UI)
+- README + protocol.md: write flow verified live (FW 1.4.3)
+
+Tests: tsc clean; guard 30/30; marauder 22/22; test-write 38/38;
+live test-serial output identical to baseline.
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
