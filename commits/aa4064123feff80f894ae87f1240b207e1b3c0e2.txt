@@ -1,0 +1,21 @@
+repository: serhii/flipperzero
+commit: aa4064123feff80f894ae87f1240b207e1b3c0e2
+date: 2026-09-24T15:05:33+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+guard: central deny list for dangerous commands (ticket #1)
+- extension/guard.ts: assertCommandAllowed() — token-anchored deny list
+  (factory_reset, storage format, crypto store_key, start_rpc_session)
+- extension/errors.ts: shared error types (breaks serial<->guard cycle)
+- serial.ts: guard runs in doSend() before ensureOpen() — a denied
+  command can never touch the port
+- dev/test-guard.ts: 30 checks, no hardware (incl. fake-port isolation
+  proof: denied command throws CommandDeniedError, not a connect error)
+- README: layout, tools, security section with deny list
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
