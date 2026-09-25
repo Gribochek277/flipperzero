@@ -1,0 +1,31 @@
+repository: serhii/flipperzero
+commit: 7fe6b7041827011eb3c94c3a5556429934f64fc1
+date: 2026-09-25T12:17:29+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+marauder direct USB + AIO board 1.4 findings (ticket #10)
+- marauder_status dual transport: Flipper bridge (if active) or direct
+  USB — discovery: PI_MARAUDER_PORT -> by-id ESP32 UART bridge chips ->
+  ttyUSB*/ttyACM* candidates, then a CLI probe validates the port
+  (a Flipper or ROM-bootloader on the port yields clear guidance)
+- version capture: boot banner at open; one-shot reboot probe when no
+  banner — bridge: 15 s read budget (cold S2 boot ~8-10 s, verified live
+  v1.15.1 on the AIO board); direct: re-enumeration-aware capture
+  (captureDirectMarauderVersion) since the reboot resets the ESP32 USB
+- fix: the status session now releases its fd before any probe
+  (two open fds on one tty split bytes — the reboot probe silently
+  failed before)
+- SerialSession.rebind(port): re-pin after a device reboot
+- AIO board V1.4 (live findings): USB-C is the ESP32-S2 native
+  USB-OTG, no bridge chip; download mode (middle + BOOT) enumerates the
+  ROM as 303a:0002 (ttyACM); the observed 'EMV Smartcard Reader' CCID is
+  an unrelated desk dongle. Normal-mode direct CLI pending a clean test.
+- dev/demo-marauder-direct.ts (live direct-USB status / guidance demo),
+  30-check bridge suite incl. direct-USB fake tests, docs + README
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
