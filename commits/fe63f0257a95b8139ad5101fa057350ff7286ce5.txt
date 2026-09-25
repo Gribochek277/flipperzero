@@ -1,0 +1,23 @@
+repository: serhii/flipperzero
+commit: fe63f0257a95b8139ad5101fa057350ff7286ce5
+date: 2026-09-25T21:19:55+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+nrf24/cc1101 spike (ticket #12): BFFB RF inventory, subghz CC1101_EXT prototype, verdict
+- research: BFFB board identification (GPS + dual CC1101 + amplified Ebyte
+  nRF24 on the Flipper SPI bus), Marauder v1.15.1 has no nRF24/CC1101
+  drivers (full-tree source check), stock OFW 1.4.3 CLI inventory
+  (subghz present with CC1101_EXT, no nrf24 app)
+- subghz rx contract verified in FW 1.4.3 sources (subghz_cli.c): ETX stop,
+  silent INT fallback, self power-off
+- prototype: dev/demo-bffb-subghz.ts — host-driven 20 s CC1101_EXT passive
+  RX with fallback diagnosis + --nrf24 guided launch (community apps only)
+- docs/protocol.md: BFFB RF modules section (inventory + verdict)
+- README: roadmap #12 verdict, #13 wontfix
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
