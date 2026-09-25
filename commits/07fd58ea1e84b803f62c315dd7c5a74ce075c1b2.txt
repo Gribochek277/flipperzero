@@ -1,0 +1,54 @@
+repository: serhii/flipperzero
+commit: 07fd58ea1e84b803f62c315dd7c5a74ce075c1b2
+date: 2026-09-25T20:08:06+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+marauder: scan/sniff/stop/save/list active-ops tools, confirm-gated (ticket #11)
+Verified against Marauder v1.15.1 firmware sources (CommandLine.cpp,
+WiFiScan.cpp): scan/sniff are ASYNC — the start command returns to the
+prompt immediately and results stream to the console until stopscan.
+
+- extension/serial.ts: SerialSession.drain() — mutex-serialized read
+  window (no command sent) to capture async device output; without an
+  active reader the tty buffer fills and output is lost. Orphaned-read
+  tracking on dispose: a tty read in the libuv pool cannot be cancelled
+  on Linux (closeSync does not unblock an in-flight read), so a session
+  that times out and then close parks one thread-pool worker until the
+  device sends data or the link dies — now visible + logged.
+- extension/marauder-tools.ts: marauder_scan_ap (rx-only, no confirm),
+  marauder_sniff (CONFIRM-GATED — fail-closed without UI; deauth flagged
+  ATTACK-CLASS), marauder_stop, marauder_save, marauder_list — all over
+  any active transport (bridge or direct USB) with the client-side
+  pre-stop rule (stopscan before every start) and post-window stopscan.
+- extension/marauder-bridge.ts: probe nudge (bare CR) so its possibly
+  parked read settles on the next prompt; corrected the close/EBADF
+  comment.
+- dev/fake_marauder.py: v1.15.1-faithful async scan/sniff semantics
+  (legacy blocking scanap kept for the engine suite).
+- dev/test-marauder-ops.ts: 32-check no-hardware suite — drain() quiet/
+  streaming, scan flow + wire order (stopscan < scanall < list -a <
+  stopscan), sniff confirm paths (no-UI fail-closed / declined /
+  approved / deauth dialog), stop/save/list, bridge mode.
+- dev/test-marauder-bridge.ts: fixed pass-but-hang — a timed-out command
+  against the real device parks an uncancelable read that keeps Node 22
+  process.exit() from returning; nudge (empty line) + close + SIGKILL
+  bail-out. Header note: run ONE at a time (shared real tty).
+- dev/demo-marauder-ops.ts: live walk — transport (reuses an already-up
+  bridge), scan 20 s, sniff 15 s (terminal confirm), stop, list, save,
+  release (user BACK).
+
+Live demo (Flipper Arasu FW 1.4.3 + Marauder AIO v1.15.1, USB-UART
+bridge): scan captured 34 APs + station associations; pmkid sniff ran
+on ch 7 with the firmware's per-second capture stats streaming; stopscan
+idempotent; list -a table; save -> 'Saved APs: 34' to /APs_0.log; bridge
+released via BACK.
+
+Suites: ops 32/32, engine 22/22, guard 30/30, bridge 30/30 — all exit
+clean. docs/protocol.md: v1.15.1 command contract + async model.
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
