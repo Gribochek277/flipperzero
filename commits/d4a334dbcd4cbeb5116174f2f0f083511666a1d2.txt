@@ -1,0 +1,23 @@
+repository: serhii/flipperzero
+commit: d4a334dbcd4cbeb5116174f2f0f083511666a1d2
+date: 2026-09-25T22:21:37+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+aio: correct board ID to AIO Board V1.4 (was misidentified as BFFB), add aio-board skill
+- board is the official 3-in-1 AIO V1.4 (SecureTechware): ESP32-S2 Marauder
+  + nRF24 + high-gain CC1101; MODE switch RED/nRF24 | GREEN/ESP32 |
+  BLUE/CC1101 drives the mode LED (official FAQ), RX-TX = CC1101 gain
+  switch (RX=LNA, TX=PA) — verified against official repo (README/
+  INSTALLATION/FAQ/board photo) + the user's live switch/LED report
+- no GPS on this board (boot banner 'GPS detect' is a standard init step)
+- dev/demo-bffb-subghz.ts -> dev/demo-aio-subghz.ts (mode switch + band
+  prompt), docs/protocol.md + README corrected
+- new skill ~/.pi/agent/skills/aio-board: board reference + RF session
+  procedure (switch first, bridge release, RX-only default, restore green)
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
