@@ -1,0 +1,19 @@
+repository: serhii/flipperzero
+commit: 86b64dc44145a179fc241e7e97e442f7965d1e2a
+date: 2026-09-25T16:55:30+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+docs/README: AIO board V1.4 verdict — CLI through the Flipper only (ticket #10)
+Normal-mode observations (middle position, no BOOT, 30+ s): the AIO
+board does not enumerate on the host — the stock _flipper firmware does
+not drive the ESP32-S2 native USB. Verdict: the Marauder CLI is
+reachable only through the Flipper USB-UART bridge (the project's use
+case); direct USB on an AIO board is out of scope. Full regression
+green (write 38/38, tx 47/47, serial DONE).
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
