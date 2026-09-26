@@ -1,0 +1,29 @@
+repository: serhii/flipperzero
+commit: a72ec7f175370cf60cf7894829a5717112157ae4
+date: 2026-09-26T04:35:11+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+probe: submit with \\r\\n (works on BOTH CLIs) — Flipper CLI detection was dead
+Root cause of the silent probe: the Flipper shell executes on CR and
+IGNORES LF, while the Marauder CLI reads readStringUntil('\n') and trims
+CR. probeMarauderPort sent a bare \n -> on the Flipper side the command
+was echoed but never executed, so flipperCli was never detectable (the
+probe had only been exercised against Marauder). Fix:
+- probe sends command + \r\n (superset: runs on both CLIs)
+- isFlipper uses includes('>: ') (a leftover prompt may be followed by
+  the echoed command — the end-anchored regex missed that)
+- FAKE_FLIPPER in test-marauder-bridge is now CR-only faithful (LF
+  dropped) — the old fake accepted \n and masked the regression
+
+Live CC1101 verification (ticket #12 close-out): subghz rx 433920000 1
+on the AIO board in BLUE mode -> 'Listening at frequency: 433919830
+device: 1' for the full 20 s window, ETX stop, 'Packets received 0',
+module self-powered-down. Verdict in docs/protocol.md marked
+LIVE-VERIFIED; README #12 line updated; npm run demo:subghz added.
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
