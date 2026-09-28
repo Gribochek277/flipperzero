@@ -1,0 +1,32 @@
+repository: serhii/flipperzero
+commit: 9ffb56ccda5dcc69d266e4d40098c9f3ce66b8f6
+date: 2026-09-28T23:46:42+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+skill: pcap-handshake-audit (project skill for the capture/audit toolchain)
+The capture half of the project ends on the Marauder's microSD with plain
+.pcap files; the analysis half had no home. Adds .agents/skills/ (the Agent
+Skills project location pi discovers from the working directory) with one
+model-invoked skill: tshark inventory -> handshake proof -> hcxpcapngtool ->
+hashcat/aircrack audit -> wpa-pwd decryption, each step with a checkable
+completion criterion.
+
+Facts it pins down (verified, not guessed):
+- pocl is REQUIRED before hashcat can run at all (this host had none:
+  "No OpenCL, HIP or CUDA compatible platform found"); aircrack-ng needs
+  nothing and returns the same verdict.
+- Marauder pcap naming/numbering, so a directory listing is readable and the
+  highest eapol_<n> is the newest run.
+- reason code 2 is the Marauder's own deauth fingerprint (WiFiScan.h
+  deauth_frame_default ends 02 00) -> the aggressive run's evidence in the dump.
+- WPA3/SAE yields nothing to -m 22000; check the AP's Security: first.
+Guardrails: own/authorized networks, scrub neighbours' MACs/ESSIDs before
+publishing, treat a recovered password as a secret.
+README: pointer to the skill under Dev.
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
