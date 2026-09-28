@@ -1,0 +1,30 @@
+repository: serhii/flipperzero
+commit: f2547f8a276e4c89e511f65c2550a41d3197c7fd
+date: 2026-09-28T23:27:52+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+marauder_sniff: expose the firmware's -d (aggressive deauth) — gated hard
+A forced handshake capture needs the device to transmit deauths so the AP's
+clients reconnect; that is the firmware's `sniffpmkid -d`. The tool did not
+expose it, so `mode=deauth` (which only LISTENS for deauth frames) was the
+closest thing — and it forces nothing.
+
+- extension/marauder-tools.ts: `aggressive` (boolean) on marauder_sniff.
+  Gates: pmkid only, an explicit `channel` is mandatory, and it gets its own
+  attack-class dialog that names the channel, states that the Marauder WILL
+  transmit deauth frames and that those clients get disconnected. Wire:
+  `sniffpmkid -c <ch> -d`. The report header says AGGRESSIVE (deauth TX) and
+  echoes the firmware's own `DEAUTH TX:` line.
+- dev/fake_marauder.py: parses `-d`, emits `DEAUTH TX: TRUE/FALSE`.
+- dev/test-marauder-ops.ts: +11 checks — `-d` on the wire, dialog is
+  attack-class and names the deauth TX, non-pmkid rejected, missing channel
+  rejected, declined -> NOTHING sent (no deauths). 52/52.
+- README/docs/protocol.md: aggressive documented (receive-only everywhere
+  else in this tool).
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
