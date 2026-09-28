@@ -1,0 +1,13 @@
+repository: serhii/flipperzero
+commit: f407c7e443b4475b6e66ec090430b8c0787cc437
+date: 2026-09-28T23:21:12+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+docs/protocol.md: live-verified sniffpmkid output (periodic stats block, DEAUTH TX: FALSE, auto-saved /eapol_<n>.pcap)
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
