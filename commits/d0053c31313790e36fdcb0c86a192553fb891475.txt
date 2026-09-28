@@ -1,0 +1,41 @@
+repository: serhii/flipperzero
+commit: d0053c31313790e36fdcb0c86a192553fb891475
+date: 2026-09-28T23:39:55+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+marauder_sniff aggressive: v1.15.1 gates -d behind the ForcePMKID setting
+Live run proved the gap: the device answered "Starting PMKID sniff with
+deauthentication on channel 3" yet reported DEAUTH TX: FALSE / Deauth: 0 —
+nothing was transmitted. Source-verified on the v1.15.1 tag we run:
+
+  WiFiScan.cpp: this->send_deauth = settings_obj.loadSetting<bool>(text_table4[5]);
+
+i.e. -d only flips the scan mode; the actual deauth TX follows the
+ForcePMKID setting. (master fixed it: the explicit active-EAPOL modes now
+win over the setting.)
+
+- extension/marauder-tools.ts: readForcePmkid() + the aggressive path now
+  reads the setting, enables it for the window when it is off, and disables
+  it again in a finally (a failed restore is reported, not swallowed). The
+  report prints the v1.15.1 note, the exact command sent, and no longer
+  CLAIMS deauths were transmitted — it points at the device's own
+  DEAUTH TX: line.
+- dev/fake_marauder.py: implements "settings" and
+  "settings -s ForcePMKID enable|disable", and gates its DEAUTH TX the same
+  way v1.15.1 does, so the test proves the gate holds.
+- dev/test-marauder-ops.ts: +5 checks (enable BEFORE the sniff, restore
+  AFTER, report explains the gate, declined -> settings untouched). 57/57.
+- dev/sniff-ap.ts: --aggressive passthrough.
+- README/docs/protocol.md: the gate documented, plus what the stats fields
+  actually mean (Channel = set_channel, Deauth = received 0xC0 frames,
+  DEAUTH TX = the send_deauth flag).
+
+Live after the fix: DEAUTH TX: TRUE, Deauth: 1, Complete EAPOL: 1 ->
+/eapol_19.pcap; ForcePMKID verified back to false afterwards.
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
