@@ -1,0 +1,18 @@
+repository: serhii/flipperzero
+commit: c39f1eef654d78a876074e58fe0f916b687f77f5
+date: 2026-09-29T02:14:07+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+skill: measured keyspace budget (aircrack ~11-18k/s, hashcat+pocl ~13.4kH/s on this CPU)
+Benchmarked during the DOM audit: both CPU paths land in the same ballpark,
+so hashcat is chosen for rules/masks/hybrids and the potfile, not for raw
+speed — only a GPU moves this number by orders of magnitude. Also states the
+honest ceiling (10-digit space = days, mixed 8-char = years) so a run that
+cannot finish is not started.
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
