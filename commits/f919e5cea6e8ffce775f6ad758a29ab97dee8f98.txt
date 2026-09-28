@@ -1,0 +1,32 @@
+repository: serhii/flipperzero
+commit: f919e5cea6e8ffce775f6ad758a29ab97dee8f98
+date: 2026-09-28T23:18:46+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+marauder_sniff: channel targeting (firmware takes -c only for pmkid)
+The tool started the bare sniff command, which captures on whatever channel
+the radio happened to be on (after a scan it has hopped channels) — useless
+for targeting a specific AP seen in marauder_list.
+
+- extension/marauder-tools.ts: optional `channel` (1-14) on marauder_sniff.
+  Per the live firmware help only sniffpmkid takes an argument
+  (`sniffpmkid [-c <channel>][-d][-l]`), so pmkid passes `-c <channel>`
+  while sae/beacon/deauth get an explicit `channel -s <channel>` first.
+  Channel is named in the confirm dialog and in the report; out-of-range
+  is rejected before anything is sent.
+- dev/fake_marauder.py: parses `-c <channel>` (reports it in the start
+  line) and implements `channel` / `channel -s <n>`.
+- dev/test-marauder-ops.ts: +9 checks — wire has `sniffpmkid -c 3` and no
+  bare command, device reports channel 3, `channel -s 3` precedes
+  `sniffsae`, dialog names the channel, channel 15 rejected with nothing
+  sent. 41/41.
+- dev/sniff-ap.ts: LIVE one-shot CLI — a thin shell over the tool (single
+  capture implementation), passive only (refuses deauth), clean errors.
+- README/docs/protocol.md/package.json (sniff:ap).
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
