@@ -1,0 +1,26 @@
+repository: serhii/flipperzero
+commit: 59d9f4dcff3c954029a9107012bc1275efd78ff5
+date: 2026-09-29T00:12:13+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+skill/docs: correct the pcap-composition claims after the live audit run
+Evidence from a real aggressive capture (eapol_19.pcap, 60 s, 537 frames):
+- the Marauder dump holds ONLY beacons + EAPOL data frames (471 + 66) — no
+  deauth, probe or auth/assoc frames. So `wlan.fixed.reason_code` finds
+  NOTHING in a Marauder pcap even when the run really transmitted; the attack
+  evidence is the firmware's own `Deauth:` counter and `DEAUTH TX:` flag.
+  The reason-code-2 fingerprint stays documented, scoped to monitor-mode
+  captures from other tools.
+- a deauth-forcing run can leave neighbouring APs' handshakes in the same
+  dump (three complete 4-ways in this one), so the scope rule is explicit.
+- budget the keyspace: the no-OpenCL aircrack path measured ~11.8k
+  candidates/s here (100k in 8.5 s) => rockyou ~20 min, blind 8-digit ~2.3 h.
+- .gitignore: audit-tmp/, *.pcap, *.22000 — captures and hashes never enter
+  version control (they carry neighbours' BSSIDs).
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
