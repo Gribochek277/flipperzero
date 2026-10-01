@@ -1,0 +1,13 @@
+repository: serhii/flipperzero
+commit: d0104bd0ca697deff38e2f89b1e40876443e70f8
+date: 2026-10-01T18:52:19+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+README: pointer to the redacted audit report under docs/audits/
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
