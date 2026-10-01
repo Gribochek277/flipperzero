@@ -1,0 +1,22 @@
+repository: serhii/flipperzero
+commit: 65d546ae7605c017dbaca559e3ea490d70c6afbb
+date: 2026-10-01T18:51:50+03:00
+author: Serhii <36171312+Gribochek277@users.noreply.github.com>
+branches: main
+
+message:
+docs: WiFi audit report (own AP, 2026-09-29) — redacted
+Full audit trail for the operator's own network: capture method (owner-approved
+aggressive PMKID run), dump composition (471 beacons + 66 EAPOL — the Marauder
+stores no deauth/probe/auth frames), complete 4-way handshake, hash extraction,
+the keyspaces tested with counts and results, the verdict (8-digit numeric —
+weak), recommendations, and the re-usable observations.
+
+Redaction: all MACs masked, neighbours anonymised (net-A/net-B), the recovered
+password never reproduced. Raw capture, hashes and potfiles stay out of git
+(.gitignore: audit-tmp/, *.pcap, *.22000).
+
+---
+Source code is NOT published on GitHub.
+README (if any) is available in the repo root.
+If you need the code, email: sergeyalpatov1@gmail.com
